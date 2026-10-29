@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Password & Policy Agent</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2316243A'/%3E%3Cpath d='M10 15v-3a6 6 0 0 1 12 0v3' stroke='%23fff' stroke-width='2.5' fill='none'/%3E%3Crect x='8' y='15' width='16' height='11' rx='2' fill='%2317766A'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="brand"><h1>Password &amp; Policy Agent</h1><span>Chat with an assistant that manages password policy on a simulated Linux server</span></div>
+  <div class="model">Model <b id="model">-</b></div>
+</header>
+<div class="banner" id="banner" hidden>No Groq API key yet. Paste it into <code>GROQ_API_KEY</code> in <code>config.py</code>, then restart <code>app.py</code>.</div>
+<main>
+  <section class="chat">
+    <div class="feed" id="feed">
+      <div class="intro" id="intro">
+        <h2>Ask about passwords and accounts</h2>
+        <p>The assistant can change password settings, answer questions about the accounts on this server, and explain how Linux password policy works.</p>
+        <p>Every change passes five checks before it touches an account: <b>Whitelist</b> (only 10 known tools), <b>Validate</b> (real user, sensible values, never root), <b>Confirm</b> (you approve locks and account disables), <b>Execute</b>, and <b>Log</b>.</p>
+      </div>
+    </div>
+    <div class="composer">
+      <div class="chips" id="chips"></div>
+      <form id="form">
+        <input id="input" autocomplete="off" placeholder="Ask something, e.g. Which accounts need attention?" aria-label="Message">
+        <button class="btn" id="send">Send</button>
+      </form>
+    </div>
+  </section>
+  <aside>
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="accounts">Accounts</button>
+      <button role="tab" aria-selected="false" data-tab="audit">Audit log</button>
+      <button role="tab" aria-selected="false" data-tab="tools">Tools</button>
+    </div>
+    <div class="panel" id="accounts">
+      <h3>Simulated /etc/shadow</h3>
+      <p class="sub">Highlighted cells changed in the last reply.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>User</th><th>Last change</th><th>Max days</th><th>Warn</th><th>Inactive</th><th>Account expires</th><th>Status</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table></div>
+      <button class="btn secondary" id="reset">Reset accounts and chat</button>
+    </div>
+    <div class="panel" id="audit" hidden>
+      <h3>Audit log</h3>
+      <p class="sub">Every message and tool call, newest first.</p>
+      <div id="log"></div>
+    </div>
+    <div class="panel" id="tools" hidden>
+      <h3>The 10 tools</h3>
+      <p class="sub">The model can only ask for these. Anything else is blocked.</p>
+      <div id="toollist"></div>
+    </div>
+  </aside>
+</main>
+<dialog id="dialog">
+  <h2>Approve this change?</h2>
+  <p id="dialog-text"></p>
+  <div class="cmd" id="dialog-cmd"></div>
+  <div class="actions"><button class="btn secondary" id="deny">Don't run it</button><button class="btn danger" id="allow">Run it</button></div>
+</dialog>
+<script src="app.js"></script>
+</body>
+</html>
