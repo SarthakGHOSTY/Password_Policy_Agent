@@ -8,7 +8,8 @@ anything changes.
 
 1. Install Python 3.10 or newer. Nothing else is needed.
 2. Get a free API key at https://console.groq.com/keys
-3. Open `config.py` and paste the key into `GROQ_API_KEY`.
+3. Copy `config.example.py` to `config.py`, then paste the key into `GROQ_API_KEY`.
+   `config.py` is git-ignored, so your key stays on your machine.
 4. Run `python app.py`. The page opens at http://127.0.0.1:8765
 
 ## What you can ask
@@ -40,7 +41,7 @@ Python, so they work even if the model is tricked by a malicious prompt.
 
 | File | What it does |
 |------|--------------|
-| `config.py` | The Groq API key, the list of models to try, and the port. |
+| `config.example.py` | Template for `config.py`: the Groq API key, the model list, and the port. Copy it to `config.py` (git-ignored). |
 | `accounts.py` | The simulated `/etc/shadow`: six accounts (four regular users, root and daemon) and how each `chage` / `passwd` command changes them. |
 | `tools.py` | The 10 tools. Each one validates its input and returns the exact command it would run. Also lists which tools need confirmation. |
 | `agent.py` | The system prompt, the call to Groq, and the loop: ask the model, check each tool call, pause for approval, run it, send the result back. Keeps the audit log and short chat memory. |
